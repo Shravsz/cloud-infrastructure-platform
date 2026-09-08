@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cloud-platform.fullname" . }}
+  labels:
+    {{- include "cloud-platform.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "cloud-platform.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "cloud-platform.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.containerPort }}
+              protocol: TCP
+
+          readinessProbe:
+            httpGet:
+              path: {{ .Values.health.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.health.readinessInitialDelay }}
+            periodSeconds: {{ .Values.health.readinessPeriod }}
+
+          livenessProbe:
+            httpGet:
+              path: {{ .Values.health.path }}
+              port: http
+            initialDelaySeconds: {{ .Values.health.livenessInitialDelay }}
+            periodSeconds: {{ .Values.health.livenessPeriod }}

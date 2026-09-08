@@ -1,0 +1,20 @@
+replicaCount: 3
+
+image:
+  repository: cloud-platform-app
+  tag: "1.2"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 5000
+  targetPort: 5000
+
+containerPort: 5000
+
+health:
+  path: /health
+  readinessInitialDelay: 5
+  readinessPeriod: 10
+  livenessInitialDelay: 10
+  livenessPeriod: 20
