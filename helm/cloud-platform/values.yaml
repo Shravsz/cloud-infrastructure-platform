@@ -1,9 +1,9 @@
 replicaCount: 3
 
 image:
-  repository: cloud-platform-app
-  tag: "1.2"
-  pullPolicy: IfNotPresent
+  repository: ghcr.io/shravsz/cloud-infrastructure-platform
+  tag: "latest"
+  pullPolicy: Always
 
 service:
   type: ClusterIP
