@@ -35,7 +35,7 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=sha
+            type=sha,prefix=sha-
             type=raw,value=latest
 
       - name: Build and push Docker image
